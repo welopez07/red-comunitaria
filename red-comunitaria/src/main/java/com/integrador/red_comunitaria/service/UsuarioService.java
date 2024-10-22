@@ -25,6 +25,16 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    public Usuario actualizarUsuario(Long id, Usuario usuarioDetalles) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        usuario.setDocumentNumber(usuarioDetalles.getDocumentNumber());
+        usuario.setName(usuarioDetalles.getName());
+        usuario.setLastName(usuarioDetalles.getLastName());
+        usuario.setCellPhone(usuarioDetalles.getCellPhone());
+        usuario.setEmail(usuarioDetalles.getEmail());
+        usuario.setRol(usuarioDetalles.getRol());
+        return usuarioRepository.save(usuario);
+    }
     public void eliminarUsuario(Long id) {
         usuarioRepository.deleteById(id);
     }

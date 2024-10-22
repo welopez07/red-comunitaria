@@ -12,5 +12,4 @@ public interface ISolicitudInversionRepository extends JpaRepository<SolicitudIn
     List<SolicitudInversion> findByInversionista(Usuario inversionista);
     List<SolicitudInversion> findByProyecto(Proyecto proyecto);
 
-
 }

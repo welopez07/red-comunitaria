@@ -1,5 +1,7 @@
 package com.integrador.red_comunitaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -23,9 +25,13 @@ public class Proyecto {
 
     @ManyToOne // Relación con el emprendedor (creador del proyecto)
     @JoinColumn(name = "creador_id")
+    @JsonBackReference(value = "usuario-proyecto")
     private Usuario creador;
     @OneToMany(mappedBy = "proyecto") // Relación con solicitudes de inversión
+    @JsonManagedReference(value = "proyecto-solicitud")
     private List<SolicitudInversion> solicitudInversions;
+
+    public Proyecto() {}
 
     public Proyecto(int projectId, String name, LocalDate date, String category, Double minInversion, String detailsInversion, EstadoProyecto estado, Usuario creador, List<SolicitudInversion> solicitudInversions) {
         this.projectId = projectId;

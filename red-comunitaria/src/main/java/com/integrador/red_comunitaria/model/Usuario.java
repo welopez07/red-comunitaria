@@ -1,5 +1,7 @@
 package com.integrador.red_comunitaria.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -19,9 +21,13 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private RolUsuario rol;
     @OneToMany(mappedBy = "creador")// Relación con proyectos (para emprendedores)
+    @JsonManagedReference(value = "usuario-proyecto")
     private List<Proyecto> proyectos;
     @OneToMany(mappedBy = "inversionista") // Relación con solicitudes de inversión (para inversionistas)
+    @JsonManagedReference(value = "usuario-solicitud" )
     private List<SolicitudInversion> solicitudInversions;
+
+    public Usuario() {}
 
     public Usuario(Long userId, String documentNumber, String name, String lastName, String cellPhone, String email, RolUsuario rol, List<Proyecto> proyectos, List<SolicitudInversion> solicitudInversions) {
         this.userId = userId;

@@ -3,6 +3,8 @@ package com.integrador.red_comunitaria.controller;
 import com.integrador.red_comunitaria.model.Usuario;
 import com.integrador.red_comunitaria.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,24 +17,48 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public List<Usuario> listarUsuarios() {
-        return usuarioService.listarUsuarios();
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        try {
+            List<Usuario> usuarios = usuarioService.listarUsuarios();
+            return ResponseEntity.ok(usuarios);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-
     @PostMapping
-    public Usuario crearUsuario(@RequestBody Usuario usuario) {
-        return usuarioService.crearUsuario(usuario);
+    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
+        try {
+            Usuario nuevoUsuario = usuarioService.crearUsuario(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-
     @GetMapping("/{id}")
-    public Usuario obtenerUsuario(@PathVariable Long id) {
-        return usuarioService.obtenerUsuarioPorId(id);
+    public ResponseEntity<Usuario> obtenerUsuario(@PathVariable Long id) {
+        try {
+            Usuario usuario = usuarioService.obtenerUsuarioPorId(id);
+            return ResponseEntity.ok(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioDetalles) {
+        try {
+            Usuario usuarioActualizado = usuarioService.actualizarUsuario(id, usuarioDetalles);
+            return ResponseEntity.ok(usuarioActualizado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     @DeleteMapping("/{id}")
-    public void eliminarUsuario(@PathVariable Long id) {
-        usuarioService.eliminarUsuario(id);
+    public ResponseEntity<String> eliminarUsuario(@PathVariable Long id) {
+        try {
+            usuarioService.eliminarUsuario(id);
+            return ResponseEntity.ok("Usuario eliminado exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el usuario");
+        }
     }
-
-
 }

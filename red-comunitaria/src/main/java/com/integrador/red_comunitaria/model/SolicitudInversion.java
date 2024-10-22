@@ -1,5 +1,7 @@
 package com.integrador.red_comunitaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,14 +13,18 @@ public class SolicitudInversion {
     private int id;
     @ManyToOne // Relación con el proyecto
     @JoinColumn(name = "proyecto_id")
+    @JsonBackReference(value = "proyecto-solicitud")
     private Proyecto proyecto;
 
     @ManyToOne // Relación con el usuario (inversionista)
     @JoinColumn(name = "usuario_id")
+    @JsonBackReference(value = "usuario-solicitud")
     private Usuario inversionista;
     private String message;
     private LocalDate date;
     private Double amount;
+
+    public SolicitudInversion() {}
 
     public SolicitudInversion(int id, Proyecto proyecto, Usuario inversionista, String message, LocalDate date, Double amount) {
         this.id = id;
