@@ -1,6 +1,10 @@
 package com.integrador.red_comunitaria.controller;
 
+import com.integrador.red_comunitaria.dto.SolicitudInversionDTO;
+import com.integrador.red_comunitaria.model.Proyecto;
 import com.integrador.red_comunitaria.model.SolicitudInversion;
+import com.integrador.red_comunitaria.repository.IProyectoRepository;
+import com.integrador.red_comunitaria.repository.IUsuarioRepository;
 import com.integrador.red_comunitaria.service.SolicitudInversionService;
 import com.integrador.red_comunitaria.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:4200/")
 @RestController
 @RequestMapping("/solicitudes-inversion")
@@ -18,12 +24,12 @@ public class SolicitudInversionController {
     private SolicitudInversionService solicitudInversionService;
 
     @PostMapping
-    public ResponseEntity<SolicitudInversion> crearSolicitud(@RequestBody SolicitudInversion solicitudInversion) {
+    public ResponseEntity<?> crearSolicitud(@RequestBody SolicitudInversionDTO solicitudDTO) {
         try {
-            SolicitudInversion nuevaSolicitud = solicitudInversionService.crearSolicitudInversion(solicitudInversion);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaSolicitud);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            SolicitudInversion nuevaSolicitud = solicitudInversionService.crearSolicitud(solicitudDTO);
+            return ResponseEntity.ok(nuevaSolicitud);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -78,7 +84,4 @@ public class SolicitudInversionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la solicitud de inversión");
         }
     }
-
-
-
 }

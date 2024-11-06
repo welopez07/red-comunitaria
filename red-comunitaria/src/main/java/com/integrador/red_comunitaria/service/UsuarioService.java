@@ -21,6 +21,11 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElse(null);
     }
 
+    public Usuario obtenerPorDocumento(String documentNumber) {
+        return usuarioRepository.findByDocumentNumber(documentNumber)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el documento: " + documentNumber));
+    }
+
     public Usuario crearUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }

@@ -43,6 +43,18 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/documentNumber/{documentNumber}")
+    public ResponseEntity<Usuario> obtenerUsuarioPorDocumento(@PathVariable String documentNumber) {
+        Usuario usuario = usuarioService.obtenerPorDocumento(documentNumber);
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioDetalles) {
         try {
